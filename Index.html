@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        /* Reset some default browser styling */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Center content on the page */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #282c34;
+  color: #ffffff;
+}
+
+h1 {
+  margin-bottom: 20px;
+  font-size: 2em;
+}
+
+/* Style the input field */
+#inputTime {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 2px solid #61dafb;
+  outline: none;
+  margin-bottom: 20px;
+  width: 200px;
+  text-align: center;
+}
+
+/* Timer display styling */
+#timerDisplay {
+  font-size: 3em;
+  font-weight: bold;
+  margin: 20px 0;
+  color: #61dafb;
+  background: #20232a;
+  padding: 15px 30px;
+  border-radius: 10px;
+  border: 2px solid #61dafb;
+  width: fit-content;
+}
+
+/* Button styling */
+button {
+  padding: 10px 20px;
+  font-size: 1em;
+  margin: 5px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #61dafb;
+  color: #20232a;
+}
+
+/* Button colors */
+button:nth-child(1) { /* Start button */
+  background-color: #4caf50;
+  color: white;
+}
+
+button:nth-child(2) { /* Pause button */
+  background-color: #ff9800;
+  color: white;
+}
+
+button:nth-child(3) { /* Reset button */
+  background-color: #f44336;
+  color: white;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Countdown Timer</h1>
+
+    <input type="text" id="inputTime" placeholder="Enter time in seconds">
+
+    <div id="timerDisplay">00:00</div>
+
+    <button onclick="startTimer()">Start</button>
+    <button onclick="pauseTimer()">Pause</button>
+    <button onclick="resetTimer()">Reset</button>
+
+    <script>
+        let countdown;
+        let remainingTime;
+        let isPaused = false;
+
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${String(minutes).padStart(2,'0')}:${String(remainingSeconds).padStart(2,'0')}`;
+        }
+
+        function startTimer() {
+            if(countdown) clearInterval(countdown);
+
+            const input = document.getElementById('inputTime').value;
+            remainingTime = parseInt(input);
+
+            if(isNaN(remainingTime) || remainingTime <= 0) {
+                alert('Please enter a valid positive number');
+                return;
+            }
+
+            countdown = setInterval(() => {
+                if(remainingTime <= 0) {
+                    clearInterval(countdown);
+                    document.getElementById('timerDisplay').textContent = 'Time’s up!';
+                } else {
+                    remainingTime--;
+                    document.getElementById('timerDisplay').textContent = formatTime(remainingTime);
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            if(!countdown) return;
+            clearInterval(countdown);
+            countdown = null;
+        }
+
+
+        function resetTimer() {
+            clearInterval(countdown);
+            countdown = null;
+            remainingTime = 0;
+            document.getElementById('timerDisplay').textContent = '00:00';
+        }
+
+
+    </script>
+</body>
+</html>
